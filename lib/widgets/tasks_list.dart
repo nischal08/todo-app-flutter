@@ -1,18 +1,29 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:todoey/models/task.dart';
 import 'package:todoey/widgets/task_tile.dart';
 
-class TasksList extends StatelessWidget {
+class TasksList extends StatefulWidget {
+  final List<Task> tasks;
+
+  TasksList(this.tasks);
+  @override
+  _TasksListState createState() => _TasksListState();
+}
+
+class _TasksListState extends State<TasksList> {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      dragStartBehavior: DragStartBehavior.down,
-      children: [
-        TaskTile(),
-        TaskTile(),
-        TaskTile(),
-        TaskTile(),
-      ],
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return TaskTile(
+            taskTile: widget.tasks[index].name,
+            isChecked: widget.tasks[index].isDone,
+            checkboxCallback: (checkboxState) {
+              widget.tasks[index].toogleDone();
+              setState(() {});
+            });
+      },
+      itemCount: widget.tasks.length,
     );
   }
 }
