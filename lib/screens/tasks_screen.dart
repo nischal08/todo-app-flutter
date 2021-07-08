@@ -1,37 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:todoey/models/task.dart';
-import 'package:todoey/screens/add_task_screen.dart';
-import 'package:todoey/widgets/tasks_list.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey_flutter/models/task_data.dart';
+import 'package:todoey_flutter/screens/add_task_screen.dart';
+import 'package:todoey_flutter/widgets/tasks_list.dart';
 
-class TasksScreen extends StatefulWidget {
-  @override
-  _TasksScreenState createState() => _TasksScreenState();
-}
-
-class _TasksScreenState extends State<TasksScreen> {
-  List<Task> tasks = [
-    Task(name: "Buy milk"),
-    Task(name: "Buy eggs"),
-    Task(name: "Buy bread"),
-  ];
-
+class TasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlueAccent,
+      floatingActionButtonLocation:
+          Provider.of<TaskData>(context).taskCount == 0
+              ? FloatingActionButtonLocation.centerFloat
+              : FloatingActionButtonLocation.endFloat,
+      backgroundColor: Theme.of(context).primaryColor,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
-              context: context,
-              builder: (context) => AddTaskScreen((newTaskTile) {
-                    tasks.add(Task(name: newTaskTile));
-                    setState(() {});
-                    Navigator.pop(context);
-                  }));
+              context: context, builder: (context) => AddTaskScreen());
         },
         child: Icon(Icons.add),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,9 +37,9 @@ class _TasksScreenState extends State<TasksScreen> {
               children: [
                 CircleAvatar(
                   child: Icon(
-                    Icons.list,
-                    size: 30.0,
-                    color: Colors.lightBlueAccent,
+                    Icons.fact_check_outlined,
+                    size: 40.0,
+                    color: Theme.of(context).primaryColor,
                   ),
                   backgroundColor: Colors.white,
                   radius: 30.0,
@@ -59,14 +48,14 @@ class _TasksScreenState extends State<TasksScreen> {
                   height: 10.0,
                 ),
                 Text(
-                  "Todoey",
+                  "Do It",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 50.0,
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  "${tasks.length} tasks",
+                  "${Provider.of<TaskData>(context).taskCount} tasks",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18.0,
@@ -87,7 +76,57 @@ class _TasksScreenState extends State<TasksScreen> {
                   topLeft: Radius.circular(20.0),
                 ),
               ),
-              child: TasksList(tasks),
+              child: Provider.of<TaskData>(context).taskCount == 0
+                  ? Container(
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                           SizedBox(
+                            height: 80,
+                          ),
+                          Container(
+                            height: 110,
+                            width: 110,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xffD7DEDE),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.done_rounded,
+                                color: Color(0xff8C959A),
+                                size: 60,
+                              ),
+                            ),
+                          ),
+                           SizedBox(
+                            height: 40,
+                          ),
+                          Text(
+                            "No Tasks",
+                            style:
+                                Theme.of(context).textTheme.headline5!.copyWith(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                          ),
+                          SizedBox(
+                            height: 0,
+                          ),
+                          Text(
+                            "Click + to add new tasks",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6!
+                                .copyWith(
+                                    color: Colors.grey.shade600,
+                                    fontWeight: FontWeight.normal),
+                          ),
+                        ],
+                      ),
+                    )
+                  : TasksList(),
             ),
           ),
         ],
