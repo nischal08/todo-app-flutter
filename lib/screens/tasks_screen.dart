@@ -27,32 +27,38 @@ class TasksScreen extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.only(
-              top: 60.0,
+              top: 70.0,
               left: 30.0,
               right: 30.0,
               bottom: 30.0,
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  child: Icon(
-                    Icons.fact_check_outlined,
-                    size: 40.0,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  backgroundColor: Colors.white,
-                  radius: 30.0,
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Text(
-                  "Do It",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 50.0,
-                      fontWeight: FontWeight.w700),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      child: Icon(
+                        Icons.fact_check_outlined,
+                        size: 40.0,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      backgroundColor: Colors.white,
+                      radius: 30.0,
+                    ),
+                    SizedBox(
+                      width: 20.0,
+                    ),
+                    Text(
+                      "DoIt",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 50.0,
+                          fontWeight: FontWeight.w700),
+                    ),
+                    
+                  ],
                 ),
                 Text(
                   "${Provider.of<TaskData>(context).taskCount} tasks",
